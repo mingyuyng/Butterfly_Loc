@@ -1,8 +1,8 @@
-function [rise_hour,set_hour] = get_sun_data_offline(Latitude, Longitude, lat, yy, mm, dd, time_zone)
+function [rise_hour,set_hour] = get_sun_data_offline(Latitude, Longitude, alt, yy, mm, dd, time_zone)
 %GET_SUN_DATA_OFFLINE: get the corresponding sunrise & sunset data offline
 %   input: Latitude, Longitude, year, month, day 
     
-    [rise, set] = sunrise(Latitude,Longitude,lat,time_zone,[yy,mm,dd]);
+    [rise, set] = sunrise(Latitude,Longitude,alt,time_zone,[yy,mm,dd]);
     
     if imag(rise) ~= 0 || imag(set) ~= 0
         rise_hour = -1000;

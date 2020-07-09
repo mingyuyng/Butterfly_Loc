@@ -19,8 +19,8 @@ date_s = datetime(yy, mm_s, dd_s, 0, 0, 0);
 time_stemp = seconds(time_light - date_s);
 
 %Checkpoint1
-%plot(time_stemp, light);
-%keyboard;
+% plot(time_stemp, light);
+% keyboard;
 
 % Interpolate and Extrapolation
 N_days = dn_e-dn_s+1;

@@ -26,7 +26,7 @@ light_net.eval()
 
 ############################
 
-NAME = 'Mexico_HOBO_Month_3_Day_11'
+NAME = '20305333_HOBO_Month_11_Day_5'
 data = sio.loadmat('../Testdata/' + NAME + '.mat')
 light_test = data['test_light']
 #temp_test = data['test_temp']

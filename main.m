@@ -18,9 +18,9 @@ addpath(genpath('./utils'));
 fprintf('Add path done !!\n');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-load('example_Mexico_HOMO.mat');
+load('example_20305333_HOBO.mat');
 time_unit = 15;    % Target sampling rate, default: 15 seconds
-GMT = 6;           % Time zone for time stemps
+GMT = 0;           % Time zone for time stemps
 
 % Data pre-processing
 data_cell = data_preprocessing(light, time_light, time_unit);
@@ -31,11 +31,11 @@ data_cell = data_preprocessing(light, time_light, time_unit);
 % -- This block is related to the neural nets. So if our method is changed one
 % day, I will update this test_generation function
 
-center_long = -100;   % Center of longitude queries 
-center_lat = 20;      % Center of latitude queries 
+center_long = -70;   % Center of longitude queries 
+center_lat = 40;      % Center of latitude queries 
 resolution = 0.5;     % Queries's resolution
 range = 20;           % Coverage range
 
-filename = './Testdata/Mexico_HOBO';      % Save path
+filename = './Testdata/20305333_HOBO';      % Save path
 test_generation(data_cell, center_long, center_lat, resolution, range, GMT, filename)
 

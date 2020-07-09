@@ -116,7 +116,7 @@ C = 1.9148*sind(M) + 0.0200*sind(2*M) + 0.0003*sind(3*M);
 % ecliptic longitude
 lambda = mod(M + C + 180 + 102.9372,360);
 % solar transit
-Jt = 2451545 + Js + 0.0053*sind(M) - 0.0069*sind(2*lambda);
+Jt = 2451545.5 + Js + 0.0053*sind(M) - 0.0069*sind(2*lambda);
 % Sun declination
 delta = asind(sind(lambda)*sind(23.44));
 % hour angle
