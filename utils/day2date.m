@@ -11,7 +11,7 @@ end
 day_dic = cumsum(day_dic);
 
 diff = day_num-day_dic;
-ind = find(diff<0);
+ind = find(diff<=0);
 
 month = ind(1)-1;
 day = diff(month);

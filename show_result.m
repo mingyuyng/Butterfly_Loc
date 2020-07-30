@@ -3,6 +3,11 @@
 
 clear all;
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+addpath(genpath('./utils'));
+fprintf('Add path done !!\n');
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 DISPLAY = 1;
 
 load('./Testdata/20305333_HOBO_Month_11_Day_5.mat');
@@ -55,38 +60,32 @@ if DISPLAY == 1
     plot(lights');hold on
     plot(120*ones(1,100), linspace(0,2,100), 'linewidth',2);hold on
     plot(360*ones(1,100), linspace(0,2,100), 'linewidth',2);hold on
-   
     
 end
 
 %%%%%%%%%%%%%%%%% Evaluating the Heat Map %%%%%%%%%%%%%%%%%%
 
-% Part 1: Weighted squared deviation 
+% Part 1: Weighted squared deviation (lower the better)
 
 fprintf('Good Estimation: \n')
 long_true = -68;
 lat_true = 41;
 
-[long_grid_2, lat_grid_2] = meshgrid(long_grid, lat_grid);
+devi = deviation(long_grid,lat_grid, light_coarse, long_true, lat_true);
 
-deviation = sum(light_coarse.* ( (long_grid-long_true).^2 + (lat_grid-lat_true).^2), 'a') / sum(light_coarse, 'a');
-
-fprintf('Deviation: %f \n', deviation);
+fprintf('Deviation: %f \n', devi);
 
 
 fprintf('Bad Estimation: \n')
 long_true = -68;
 lat_true = 35;
 
-[long_grid_2, lat_grid_2] = meshgrid(long_grid, lat_grid);
+devi = deviation(long_grid,lat_grid, light_coarse, long_true, lat_true);
 
-deviation = sum(light_coarse.* ( (long_grid-long_true).^2 + (lat_grid-lat_true).^2), 'a') / sum(light_coarse, 'a');
-
-fprintf('Deviation: %f \n', deviation);
+fprintf('Deviation: %f \n', devi);
 
 
 % Part 2: Compare two heatmaps
-
 
 % Move the heatmap north by 5 degrees
 light_coarse_1 = [light_coarse(37:41, :); light_coarse(1:36, :)];
@@ -126,34 +125,19 @@ ylim([lat_grid(1), lat_grid(end)]);
 
 % Next possible algorithm: Earth mover's distance
 
-% Normalize
-light_coarse_dist = light_coarse/sum(light_coarse, 'a');
-light_coarse_dist_1 = light_coarse_1/sum(light_coarse_1, 'a');
-light_coarse_dist_2 = light_coarse_2/sum(light_coarse_2, 'a');
-
-average = (light_coarse_dist + light_coarse_dist_1) / 2;
-
-KL1 = sum(light_coarse_dist .* (log2(light_coarse_dist)-log2(average)), 'a');
-KL2 = sum(light_coarse_dist_1 .* (log2(light_coarse_dist_1)-log2(average)), 'a');
-JS = (KL1+KL2)/2;
+JS = JS_divergence(light_coarse, light_coarse_1);
 
 fprintf('JS divergence #1: %f \n', JS);
 
-average = (light_coarse_dist + light_coarse_dist_2) / 2;
-
-KL1 = sum(light_coarse_dist .* (log2(light_coarse_dist)-log2(average)), 'a');
-KL2 = sum(light_coarse_dist_2 .* (log2(light_coarse_dist_2)-log2(average)), 'a');
-JS = (KL1+KL2)/2;
+JS = JS_divergence(light_coarse, light_coarse_2);
 
 fprintf('JS divergence #2: %f \n', JS);
 
 % Algorithm #2
-% Overlapped area (larger the better)
+% Overlapped volume (larger the better)
 
-overlap_location = abs(light_coarse_dist-light_coarse_dist_1)>1e-5;
-area = sum(min(light_coarse_dist(overlap_location), light_coarse_dist_1(overlap_location)));
-fprintf('Overlapped area #1: %f \n', area);
+volume = overlap(light_coarse, light_coarse_1);
+fprintf('Overlapped area #1: %f \n', volume);
 
-overlap_location = abs(light_coarse_dist-light_coarse_dist_2)>1e-5;
-area = sum(min(light_coarse_dist(overlap_location), light_coarse_dist_2(overlap_location)));
-fprintf('Overlapped area #2: %f \n', area);
+volume = overlap(light_coarse, light_coarse_2);
+fprintf('Overlapped area #2: %f \n', volume);
