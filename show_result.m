@@ -36,7 +36,9 @@ if DISPLAY == 1
     ylabel('latitude')
     xlim([long_grid(1), long_grid(end)]);
     ylim([lat_grid(1), lat_grid(end)]);
-      
+    hold on
+    
+    
     subplot(1,3,2)
     title('Fine grid')
     surface(long_fine,lat_fine,light_intp, 'edgecolor', 'None')
@@ -71,18 +73,19 @@ fprintf('Good Estimation: \n')
 long_true = -68;
 lat_true = 41;
 
-devi = deviation(long_grid,lat_grid, light_coarse, long_true, lat_true);
+[devi_long, devi_lat] = deviation(long_grid,lat_grid, light_coarse, long_true, lat_true);
 
-fprintf('Deviation: %f \n', devi);
-
+fprintf('Deviation longitude: %f \n', devi_long);
+fprintf('Deviation latitude: %f \n', devi_lat);
 
 fprintf('Bad Estimation: \n')
 long_true = -68;
 lat_true = 35;
 
-devi = deviation(long_grid,lat_grid, light_coarse, long_true, lat_true);
+[devi_long, devi_lat] = deviation(long_grid,lat_grid, light_coarse, long_true, lat_true);
 
-fprintf('Deviation: %f \n', devi);
+fprintf('Deviation longitude: %f \n', devi_long);
+fprintf('Deviation latitude: %f \n', devi_lat);
 
 
 % Part 2: Compare two heatmaps
