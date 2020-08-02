@@ -49,7 +49,7 @@ if DISPLAY == 1
     
     lights = [];
     for j = 1:size(test_light,1)
-        mm = light_coarse(:,j) > 0.1;
+        mm = light_coarse(:,j) > 0.5;
         if sum(mm)>1
             lights = [lights; squeeze(test_light(j,mm,:))];
         elseif sum(mm)==1
@@ -144,3 +144,17 @@ fprintf('Overlapped area #1: %f \n', volume);
 
 volume = overlap(light_coarse, light_coarse_2);
 fprintf('Overlapped area #2: %f \n', volume);
+
+
+
+% Localization using the heatmap
+
+[long_est,lat_est] = localization(light_coarse, long_grid, lat_grid);
+
+fprintf('Coarse Estimated longitude: %f \n', long_est);
+fprintf('Coarse Estimated latitude: %f \n', lat_est);
+
+[long_est,lat_est] = localization(light_intp, long_fine, lat_fine);
+
+fprintf('Fine Estimated longitude: %f \n', long_est);
+fprintf('Fine Estimated latitude: %f \n', lat_est);
